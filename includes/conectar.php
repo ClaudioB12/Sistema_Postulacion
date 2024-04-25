@@ -8,7 +8,7 @@
         if($link->connect_errno){
             echo "Error, no se ha podido conectar a la Base de Datos";
         }else {
-            echo "Conexión exitosa";
+            //echo "Conexión exitosa";
             return $link;
         }
     }
