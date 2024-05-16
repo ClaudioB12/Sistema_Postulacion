@@ -1,4 +1,5 @@
 <?php
+    include_once("config.php");
     session_start();
 ?>
 <!DOCTYPE html>
@@ -28,22 +29,40 @@
                 </div>
             </form>
             <!-- Navbar-->
+
+            <!-- Preguntamos si la sesión S_USUARIO existe, solo en tal caso mostramos el texto "bienvenido..." -->
+            <?php
+                if(isset($_SESSION['S_USUARIO'])) {
+            ?>
+
             <div class="text-warning">
                 <?php
                 echo 'Bienvenido ' .$_SESSION['S_USUARIO'];
                 ?>
             </div>
+            <?php } ?>
+
+
+            <!-- Preguntamos si la sesión S_USUARIO existe, solo en tal caso mostramos el menu para un usuario 'logeado' -->
+
+            <?php
+                if(isset($_SESSION['S_USUARIO'])) {
+            ?>
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#!">Settings</a></li>
-                        <li><a class="dropdown-item" href="#!">Activity Log</a></li>
-                        <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="#!">Logout</a></li>
-                    </ul>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="#!">Settings</a></li>
+                            <li><a class="dropdown-item" href="#!">Activity Log</a></li>
+                            <li><hr class="dropdown-divider" /></li>
+
+                            <li><a class="dropdown-item" href="<?=RUTA_GENERAL;?>source/logout.php">Logout</a></li>
+                       
+                        </ul>
                 </li>
             </ul>
+            <?php } ?>
+
         </nav>
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
@@ -51,17 +70,145 @@
                     <div class="sb-sidenav-menu">
                         <div class="nav">
                             <div class="sb-sidenav-menu-heading">Core</div>
-                            <a class="nav-link" href="index.php">
+                            <a class="nav-link" href="<?=RUTA_GENERAL;?>index.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Inicio
                             </a>
                         </div>
+
+<!-- Aquí preguntamos si la sesion S_USUARIO no existe pues sólo en ese caso se debe mostrar la opcion ingresar  -->
+
+                        <?php
+                if(!isset($_SESSION['S_USUARIO'])) {
+                            ?>
                         <div class="nav">
-                            <a class="nav-link" href="source/ingresar.php">
+                            <a class="nav-link" href="<?=RUTA_GENERAL;?>source/ingresar.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
-                                Ingresar
+                                Ingresar al Sistema
                             </a>
                         </div>
+                        <div class="nav">
+                            <a class="nav-link" href="">
+                                <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                                Ver ofertas
+                            </a>
+                        </div>
+                        <div class="nav">
+                            <a class="nav-link" href="">
+                                <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                                Registrarse
+                            </a>
+                        </div>
+                        <?php } ?>
+
+<!-- Aquí inicia todas las opciones de nuestro sistema  -->
+<?php
+// Verificar si el usuario ha iniciado sesión
+if(isset($_SESSION['S_ROL'])) {
+    $rol = $_SESSION['S_ROL']; // Obtener el rol del usuario
+
+    // Verificar el rol y mostrar las opciones correspondientes
+    switch ($rol) {
+        case 1: // EMPRESA
+            ?>
+            <div class="nav">
+                <a class="nav-link" href="">
+                    <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                    Ver Ofertas
+                </a>
+            </div>
+
+            <div class="nav">
+                <a class="nav-link" href="">
+                    <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                    Crear Oferta Laboral
+                </a>
+            </div>
+
+            <div class="nav">
+                <a class="nav-link" href="">
+                    <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                    Buscar postulante
+                </a>
+            </div>
+
+            <div class="nav">
+                <a class="nav-link" href="">
+                    <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                    Administrar Ofertas
+                </a>
+            </div>
+
+            <div class="nav">
+                <a class="nav-link" href="">
+                    <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                    Seleccionar postulantes
+                </a>
+            </div>
+            <?php
+            break;
+        case 2: // ADMINISTRADOR
+            ?>
+            <div class="nav">
+                <a class="nav-link" href="">
+                    <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                    Crear Usuario
+                </a>
+            </div>
+
+            <div class="nav">
+                <a class="nav-link" href="">
+                    <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                    Crear Postulante
+                </a>
+            </div>
+
+            <div class="nav">
+                <a class="nav-link" href="<?=RUTA_GENERAL;?>source/admin/listar_empresas.php">
+                    <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                    Listar Empresas
+                </a>
+            </div>
+
+            <div class="nav">
+                <a class="nav-link" href="">
+                    <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                    Listar Ofertas
+                </a>
+            </div>
+            <?php
+            break;
+        case 3: // POSTULANTE
+            ?>
+            <div class="nav">
+                <a class="nav-link" href="">
+                    <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                    Buscar Ofertas
+                </a>
+            </div>
+
+            <div class="nav">
+                <a class="nav-link" href="">
+                    <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                    Postular Ofertas
+                </a>
+            </div>
+
+            <div class="nav">
+                <a class="nav-link" href="">
+                    <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                    Mis Postulaciones
+                </a>
+            </div>
+            <?php
+            break;
+        default:
+            // Manejar cualquier otro caso o no hacer nada si no hay un rol definido
+            break;
+    }
+}
+?>
+
                     </div>
                 </nav>  
             </div>

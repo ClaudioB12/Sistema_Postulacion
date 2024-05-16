@@ -12,7 +12,7 @@
     //echo "contraseña recibida:".$password;
 
     $sql="SELECT * FROM usuarios WHERE user='$usuario' AND password='$password' ";
-    $resultado=mysqli_query($conexion,$sql);
+    $resultado=mysqli_query($conexion,$sql);    
     $numero_registros = mysqli_affected_rows($conexion);
     //echo $numero_registros;
 
